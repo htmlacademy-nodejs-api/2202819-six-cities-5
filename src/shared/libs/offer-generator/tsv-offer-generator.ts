@@ -4,25 +4,13 @@ import {OfferGenerator} from './offer-generator.interface.js';
 import {generateRandomValue, getRandomItem, getRandomItems} from '../../helpers/index.js';
 
 const PredefinedValues = {
-  BEDROOM: {
-    MIN: 1,
-    MAX: 8,
-  },
-  MAX_ADULT: {
-    MIN: 1,
-    MAX: 10,
-  },
-  PRICE: {
-    MIN: 100,
-    MAX: 100000,
-  },
-  RATE: {
-    MIN: 1,
-    MAX: 5,
-  },
-};
+  Rate: {Min: 1, Max: 5},
+  Bedroom: {Min: 1, Max: 8},
+  MaxAdult: {Min: 1, Max: 10},
+  Price: {Min: 100, Max: 100000},
+} as const;
 
-const WeekDay = {FIRST: 1, LAST: 7};
+const WeekDay = {First: 1, Last: 7} as const;
 
 export class TSVOfferGenerator implements OfferGenerator {
   constructor(private readonly mockData: MockServerData) {}
@@ -35,11 +23,11 @@ export class TSVOfferGenerator implements OfferGenerator {
     const images = getRandomItems<string>(this.mockData.images).join(';');
     const isPremium = Boolean(Math.random() < 0.5);
     const isFavorite = Boolean(Math.random() < 0.5);
-    const rating = generateRandomValue(PredefinedValues.RATE.MIN, PredefinedValues.RATE.MAX).toString();
+    const rating = generateRandomValue(PredefinedValues.Rate.Min, PredefinedValues.Rate.Max).toString();
     const type = getRandomItem<string>(this.mockData.types);
-    const bedrooms = generateRandomValue(PredefinedValues.BEDROOM.MIN, PredefinedValues.BEDROOM.MAX).toString();
-    const maxAdults = generateRandomValue(PredefinedValues.MAX_ADULT.MIN, PredefinedValues.MAX_ADULT.MAX).toString();
-    const price = generateRandomValue(PredefinedValues.PRICE.MIN, PredefinedValues.PRICE.MAX).toString();
+    const bedrooms = generateRandomValue(PredefinedValues.Bedroom.Min, PredefinedValues.Bedroom.Max).toString();
+    const maxAdults = generateRandomValue(PredefinedValues.MaxAdult.Min, PredefinedValues.MaxAdult.Max).toString();
+    const price = generateRandomValue(PredefinedValues.Price.Min, PredefinedValues.Price.Max).toString();
     const goods = getRandomItems<string>(this.mockData.goods).join(';');
     const name = getRandomItem<string>(this.mockData.names);
     const email = getRandomItem<string>(this.mockData.emails);
@@ -49,7 +37,7 @@ export class TSVOfferGenerator implements OfferGenerator {
     const location = getRandomItem<string>(this.mockData.locations);
 
     const date = dayjs()
-      .subtract(generateRandomValue(WeekDay.FIRST, WeekDay.LAST), 'day')
+      .subtract(generateRandomValue(WeekDay.First, WeekDay.Last), 'day')
       .toISOString();
 
     const [latitude, longitude] = location.split(' ');
